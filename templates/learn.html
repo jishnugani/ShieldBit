@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>ShieldBit</title>
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
+        <link href="{{url_for('static', filename='assets/css/styles.css')}}" rel="stylesheet" />
+        <style>
+            body {
+                font-family: 'Arial', sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f4;
+            }
+    
+            .game-container {
+                max-width: 600px;
+                margin: 50px auto;
+                background-color: #fff;
+                padding: 20px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                text-align: center;
+            }
+    
+            h2 {
+                color: #333;
+            }
+    
+            p {
+                color: #555;
+            }
+    
+            input {
+                padding: 10px;
+                margin-bottom: 10px;
+            }
+    
+            button {
+                background-color: #4CAF50;
+                color: #fff;
+                border: none;
+                padding: 10px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                cursor: pointer;
+                border-radius: 5px;
+                margin-right: 10px;
+            }
+    
+            button:hover {
+                background-color: #45a049;
+            }
+        </style>
+    </head>
+    <body>
+        
+        <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand" href="{{url_for('index')}}">ShieldBit</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto py-4 py-lg-0">
+                       <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{url_for('index')}}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{url_for('learn')}}">Learn Cryptography</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{url_for('phishing')}}">Learn About Phishing</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{url_for('email')}}">Detect Phishing Emails</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{url_for('analyse')}}">Analyse Domains for Phishing</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <header class="masthead" style="background-image: url('https://miro.medium.com/v2/resize:fit:1358/1*Ut4qVQ1zR7OyOMAIfeb9PA.png')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="page-heading">
+                            <h1></h1>
+                            <span class="subheading"> </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+     
+        <main class="mb-4">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                          <!-- Cryptography Games -->
+    <div class="game-container" id="cryptographyGames">
+        <h1>Cryptography Mini-Games</h1>
+
+        <!-- Caesar Cipher Game -->
+        <div id="caesarCipherGame">
+            <h2>Caesar Cipher Game</h2>
+            <p>Encrypt and Decrypt messages using a Caesar cipher:</p>
+
+            <label for="encryptionKey">Encryption key (shift):</label>
+            <input type="number" id="encryptionKey" placeholder="Enter the encryption key">
+
+            <label for="originalMessage">Enter your message:</label>
+            <input type="text" id="originalMessage" placeholder="Type your message">
+
+            <button onclick="encryptMessage()">Encrypt</button>
+            <button onclick="decryptMessage()">Decrypt</button>
+
+            <p id="encryptedResult"></p>
+            <p id="decryptedResult"></p>
+        </div>
+
+        <!-- Transposition Cipher Game -->
+        <div id="transpositionCipherGame" style="display:none;">
+            <h2>Transposition Cipher Game</h2>
+            <p>Rearrange the letters to reveal the original message:</p>
+
+            <p id="encryptedMessage"></p>
+
+            <label for="userGuess">Your Guess:</label>
+            <input type="text" id="userGuess" placeholder="Enter your rearranged guess">
+
+            <button onclick="checkTranspositionCipher()">Check Answer</button>
+
+            <p id="transpositionCipherResult"></p>
+        </div>
+    </div>
+
+    <script>
+        function showCaesarCipherGame() {
+            document.getElementById('caesarCipherGame').style.display = 'block';
+            document.getElementById('transpositionCipherGame').style.display = 'none';
+        }
+
+        function showTranspositionCipherGame() {
+            document.getElementById('caesarCipherGame').style.display = 'none';
+            document.getElementById('transpositionCipherGame').style.display = 'block';
+            generateRandomJumbledSentence();
+        }
+
+        // Caesar Cipher Game Functions
+        function encryptMessage() {
+            const encryptionKey = parseInt(document.getElementById('encryptionKey').value);
+            const originalMessage = document.getElementById('originalMessage').value.toUpperCase();
+            const encryptedResult = caesarCipher(originalMessage, encryptionKey);
+            document.getElementById('encryptedResult').innerText = `Encrypted Message: ${encryptedResult}`;
+        }
+
+        function decryptMessage() {
+            const encryptionKey = parseInt(document.getElementById('encryptionKey').value);
+            const originalMessage = document.getElementById('originalMessage').value.toUpperCase();
+            // To decrypt, use the inverse of the key (negative shift)
+            const decryptionKey = -encryptionKey;
+            const decryptedResult = caesarCipher(originalMessage, decryptionKey);
+            document.getElementById('decryptedResult').innerText = `Decrypted Message: ${decryptedResult}`;
+        }
+
+        function caesarCipher(message, key) {
+            return message.replace(/[A-Z]/g, function(char) {
+                const charCode = char.charCodeAt(0);
+                const baseCharCode = 'A'.charCodeAt(0);
+                const encryptedCharCode = (charCode - baseCharCode + key + 26) % 26 + baseCharCode;
+                return String.fromCharCode(encryptedCharCode);
+            });
+        }
+
+        // Transposition Cipher Game Functions
+        function generateRandomJumbledSentence() {
+            const sentences = [
+                "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG",
+                "A JOURNEY OF A THOUSAND MILES BEGINS WITH A SINGLE STEP",
+                "WHERE THERE IS LOVE THERE IS LIFE",
+                "TO BE OR NOT TO BE THAT IS THE QUESTION",
+                "ALL THAT GLITTERS IS NOT GOLD"
+            ];
+
+            // Select a random sentence
+            const randomSentence = sentences[Math.floor(Math.random() * sentences.length)];
+
+            // Jumble the sentence
+            const jumbledSentence = jumbleSentence(randomSentence);
+
+            // Display the jumbled sentence
+            document.getElementById('encryptedMessage').innerText = jumbledSentence;
+        }
+
+        function jumbleSentence(sentence) {
+            // Jumble the sentence by reversing each word
+            return sentence
+                .split(' ')
+                .map(word => reverseWord(word))
+                .join(' ');
+        }
+
+        function reverseWord(word) {
+            // Reverse the word
+            return word.split('').reverse().join('');
+        }
+
+        function checkTranspositionCipher() {
+            const encryptedMessage = document.getElementById('encryptedMessage').innerText;
+            const userGuess = document.getElementById('userGuess').value.toUpperCase();
+
+            if (userGuess === decryptTranspositionCipher(encryptedMessage)) {
+                document.getElementById('transpositionCipherResult').innerText = "Congratulations! You rearranged the message correctly!";
+            } else {
+                document.getElementById('transpositionCipherResult').innerText = "Sorry, the arrangement is incorrect. Try again!";
+            }
+        }
+
+        function decryptTranspositionCipher(encryptedMessage) {
+            // Split the words in the encrypted message
+            const words = encryptedMessage.split(' ');
+
+            // Create an array to hold the decrypted words
+            const decryptedWords = [];
+
+            // Decrypt each word by reversing it
+            for (const word of words) {
+                const decryptedWord = reverseWord(word);
+                decryptedWords.push(decryptedWord);
+            }
+
+            // Join the decrypted words to form the original message
+            return decryptedWords.join(' ');
+        }
+    </script>
+
+    <!-- Navigation Buttons -->
+    <div style="text-align: center; margin-top: 20px;">
+        <button onclick="showCaesarCipherGame()">Caesar Cipher Game</button>
+        <button onclick="showTranspositionCipherGame()">Transposition Cipher Game</button>
+    </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+         <footer class="border-top">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <ul class="list-inline text-center">
+                            <li class="list-inline-item">
+                                <a href="https://github.com/jishnugani/ShieldBit">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+ 
+        <script src="{{url_for('static', filename='assets/js/scripts.js')}}"></script>
+    </body>
+</html>

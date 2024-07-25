@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cryptography Mini-Games</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .game-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        p {
+            color: #555;
+        }
+
+        input {
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <!-- Cryptography Games -->
+    <div class="game-container" id="cryptographyGames">
+        <h1>Cryptography Mini-Games</h1>
+
+        <!-- Caesar Cipher Game -->
+        <div id="caesarCipherGame">
+            <h2>Caesar Cipher Game</h2>
+            <p>Encrypt and Decrypt messages using a Caesar cipher:</p>
+
+            <label for="encryptionKey">Encryption key (shift):</label>
+            <input type="number" id="encryptionKey" placeholder="Enter the encryption key">
+
+            <label for="originalMessage">Enter your message:</label>
+            <input type="text" id="originalMessage" placeholder="Type your message">
+
+            <button onclick="encryptMessage()">Encrypt</button>
+            <button onclick="decryptMessage()">Decrypt</button>
+
+            <p id="encryptedResult"></p>
+            <p id="decryptedResult"></p>
+        </div>
+
+        <!-- Transposition Cipher Game -->
+        <div id="transpositionCipherGame" style="display:none;">
+            <h2>Transposition Cipher Game</h2>
+            <p>Rearrange the letters to reveal the original message:</p>
+
+            <p id="encryptedMessage"></p>
+
+            <label for="userGuess">Your Guess:</label>
+            <input type="text" id="userGuess" placeholder="Enter your rearranged guess">
+
+            <button onclick="checkTranspositionCipher()">Check Answer</button>
+
+            <p id="transpositionCipherResult"></p>
+        </div>
+    </div>
+
+    <script>
+        function showCaesarCipherGame() {
+            document.getElementById('caesarCipherGame').style.display = 'block';
+            document.getElementById('transpositionCipherGame').style.display = 'none';
+        }
+
+        function showTranspositionCipherGame() {
+            document.getElementById('caesarCipherGame').style.display = 'none';
+            document.getElementById('transpositionCipherGame').style.display = 'block';
+            generateRandomJumbledSentence();
+        }
+
+        // Caesar Cipher Game Functions
+        function encryptMessage() {
+            const encryptionKey = parseInt(document.getElementById('encryptionKey').value);
+            const originalMessage = document.getElementById('originalMessage').value.toUpperCase();
+            const encryptedResult = caesarCipher(originalMessage, encryptionKey);
+            document.getElementById('encryptedResult').innerText = `Encrypted Message: ${encryptedResult}`;
+        }
+
+        function decryptMessage() {
+            const encryptionKey = parseInt(document.getElementById('encryptionKey').value);
+            const originalMessage = document.getElementById('originalMessage').value.toUpperCase();
+            // To decrypt, use the inverse of the key (negative shift)
+            const decryptionKey = -encryptionKey;
+            const decryptedResult = caesarCipher(originalMessage, decryptionKey);
+            document.getElementById('decryptedResult').innerText = `Decrypted Message: ${decryptedResult}`;
+        }
+
+        function caesarCipher(message, key) {
+            return message.replace(/[A-Z]/g, function(char) {
+                const charCode = char.charCodeAt(0);
+                const baseCharCode = 'A'.charCodeAt(0);
+                const encryptedCharCode = (charCode - baseCharCode + key + 26) % 26 + baseCharCode;
+                return String.fromCharCode(encryptedCharCode);
+            });
+        }
+
+        // Transposition Cipher Game Functions
+        function generateRandomJumbledSentence() {
+            const sentences = [
+                "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG",
+                "A JOURNEY OF A THOUSAND MILES BEGINS WITH A SINGLE STEP",
+                "WHERE THERE IS LOVE THERE IS LIFE",
+                "TO BE OR NOT TO BE THAT IS THE QUESTION",
+                "ALL THAT GLITTERS IS NOT GOLD"
+            ];
+
+            // Select a random sentence
+            const randomSentence = sentences[Math.floor(Math.random() * sentences.length)];
+
+            // Jumble the sentence
+            const jumbledSentence = jumbleSentence(randomSentence);
+
+            // Display the jumbled sentence
+            document.getElementById('encryptedMessage').innerText = jumbledSentence;
+        }
+
+        function jumbleSentence(sentence) {
+            // Jumble the sentence by reversing each word
+            return sentence
+                .split(' ')
+                .map(word => reverseWord(word))
+                .join(' ');
+        }
+
+        function reverseWord(word) {
+            // Reverse the word
+            return word.split('').reverse().join('');
+        }
+
+        function checkTranspositionCipher() {
+            const encryptedMessage = document.getElementById('encryptedMessage').innerText;
+            const userGuess = document.getElementById('userGuess').value.toUpperCase();
+
+            if (userGuess === decryptTranspositionCipher(encryptedMessage)) {
+                document.getElementById('transpositionCipherResult').innerText = "Congratulations! You rearranged the message correctly!";
+            } else {
+                document.getElementById('transpositionCipherResult').innerText = "Sorry, the arrangement is incorrect. Try again!";
+            }
+        }
+
+        function decryptTranspositionCipher(encryptedMessage) {
+            // Split the words in the encrypted message
+            const words = encryptedMessage.split(' ');
+
+            // Create an array to hold the decrypted words
+            const decryptedWords = [];
+
+            // Decrypt each word by reversing it
+            for (const word of words) {
+                const decryptedWord = reverseWord(word);
+                decryptedWords.push(decryptedWord);
+            }
+
+            // Join the decrypted words to form the original message
+            return decryptedWords.join(' ');
+        }
+    </script>
+
+    <!-- Navigation Buttons -->
+    <div style="text-align: center; margin-top: 20px;">
+        <button onclick="showCaesarCipherGame()">Caesar Cipher Game</button>
+        <button onclick="showTranspositionCipherGame()">Transposition Cipher Game</button>
+    </div>
+</body>
+</html>
+
