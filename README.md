@@ -35,4 +35,3 @@ First install Python before running
 
 ### Run the Code
 ```flask run```
-or run app.py
