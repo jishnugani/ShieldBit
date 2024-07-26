@@ -26,3 +26,13 @@ We got practical experience developing a web application with Flask as a backend
 
 ## What's next for ShieldBit
 The next step would be to incorporate a database for recording all reported phishing domain names. For instance, we can make improvements to the existing tools by adding more features that will enhance user experience. We are aiming at maintaining an updated version of ShieldBit whereby it will remain ahead in keeping track of the newly emerging and most inclusive cyber-attack protection solution available online.
+
+## How to Run
+First install Python before running
+
+### Install the Requirements
+```pip install -r requirements.txt```
+
+### Run the Code
+```flask run```
+or run app.py
