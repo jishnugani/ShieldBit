@@ -45,7 +45,7 @@ def analyze_url(url):
             print(f"  {key}: {value}")
 
     if is_phishing:
-        return "Phishing Alert: This URL may be a phishing attempt"
+        return "This URL may be a phishing attempt"
     else:
         return "No phishing indicators detected."
 
@@ -75,12 +75,11 @@ def check_domain_age(domain):
         if creation_date:
             current_date = datetime.now()
             domain_age = (current_date - creation_date).days
-            if domain_age>365:
+            if domain_age > 365:
                 return f"The {domain} was registered {domain_age} days ago and might not be a Phishing Website"
             else:
                 return f"The {domain} was registered recently around {domain_age} days ago and might be a Phishing Website"
         else:
-            return None
-    except whois.parser.PywhoisError as e:
-        print(f'Error retrieving WHOIS information: {e}')
-
+            return "Creation date not found."
+    except Exception as e:
+        return f"Error retrieving WHOIS information: {e}"
