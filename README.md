@@ -31,7 +31,11 @@ The next step would be to incorporate a database for recording all reported phis
 First install Python before running
 
 ### Install the Requirements
-```pip install -r requirements.txt```
+```
+pip install -r requirements.txt
+```
 
 ### Run the Code
-```flask run```
+```
+flask run
+```
